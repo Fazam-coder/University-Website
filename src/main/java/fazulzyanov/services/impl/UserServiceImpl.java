@@ -2,8 +2,8 @@ package fazulzyanov.services.impl;
 
 import fazulzyanov.dto.UserDto;
 import fazulzyanov.dao.UserDao;
-import fazulzyanov.dao.impl.UserDaoImpl;
 import fazulzyanov.entity.User;
+import fazulzyanov.main.Main;
 import fazulzyanov.services.UserService;
 import fazulzyanov.util.PasswordUtil;
 
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
-    private final UserDao userDao = new UserDaoImpl();
+    private final UserDao userDao = Main.getUserDao();
 
     @Override
     public List<UserDto> getAll() {

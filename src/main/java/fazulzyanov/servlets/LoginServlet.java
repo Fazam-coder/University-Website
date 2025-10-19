@@ -1,7 +1,7 @@
 package fazulzyanov.servlets;
 
+import fazulzyanov.main.Main;
 import fazulzyanov.services.UserService;
-import fazulzyanov.services.impl.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +11,7 @@ import java.io.IOException;
 @WebServlet(name = "Login", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
 
-    UserService userService = new UserServiceImpl();
+    private final UserService userService = Main.getUserService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {

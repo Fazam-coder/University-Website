@@ -1,7 +1,7 @@
 package fazulzyanov.servlets;
 
+import fazulzyanov.main.Main;
 import fazulzyanov.services.UserService;
-import fazulzyanov.services.impl.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +13,7 @@ import java.io.IOException;
 @WebServlet(name = "SignUp", urlPatterns = "/sign_up")
 public class SignUpServlet extends HttpServlet {
 
-    UserService userService = new UserServiceImpl();
+    private final UserService userService = Main.getUserService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -21,7 +21,7 @@ public class SignUpServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         // registration
         String name = req.getParameter("name");
         String lastname = req.getParameter("lastname");

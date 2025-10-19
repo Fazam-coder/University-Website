@@ -1,6 +1,7 @@
 package fazulzyanov.dao.impl;
 
 import fazulzyanov.dao.UserDao;
+import fazulzyanov.entity.Role;
 import fazulzyanov.entity.User;
 import fazulzyanov.util.DatabaseConnectionUtil;
 
@@ -9,12 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl implements UserDao {
-    // use dependency injection
     private final Connection connection = DatabaseConnectionUtil.getConnection();
 
     @Override
     public List<User> getAll() {
-        String sql = "select * from users";
+        String sql = "select * from users inner join role on users.role_id = role.id";
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
@@ -27,7 +27,8 @@ public class UserDaoImpl implements UserDao {
                                     resultSet.getString("name"),
                                     resultSet.getString("lastname"),
                                     resultSet.getString("login"),
-                                    resultSet.getString("password")
+                                    resultSet.getString("password"),
+                                    getRole(resultSet.getString("role"))
                             )
                     );
                 }
@@ -55,7 +56,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getById(Integer id) throws IllegalArgumentException {
-        String sql = "select * from users where id = ?";
+        String sql = "select * from users inner join role on users.role_id = role.id where id = ?";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
@@ -67,7 +68,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getByLogin(String login) throws IllegalArgumentException {
-        String sql = "select * from users where login = ?";
+        String sql = "select * from users inner join role on users.role_id = role.id where login = ?";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, login);
@@ -80,17 +81,24 @@ public class UserDaoImpl implements UserDao {
     private User getUser(PreparedStatement preparedStatement) throws SQLException, IllegalArgumentException {
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
-            User user = new User(
+            return new User(
                     resultSet.getInt("id"),
                     resultSet.getString("name"),
                     resultSet.getString("lastname"),
                     resultSet.getString("login"),
-                    resultSet.getString("password")
+                    resultSet.getString("password"),
+                    getRole(resultSet.getString("role"))
             );
-            return user;
         }
         throw new IllegalArgumentException();
     }
 
-
+    private Role getRole(String role) {
+        return switch (role) {
+            case "admin" -> Role.ADMIN;
+            case "teacher" -> Role.TEACHER;
+            case "student" -> Role.STUDENT;
+            default -> Role.USER;
+        };
+    }
 }

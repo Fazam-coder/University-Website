@@ -6,8 +6,7 @@ public class User {
     private String lastname;
     private String login;
     private String password;
-
-    public User() {}
+    private Role role;
 
     public User(Integer id, String name, String lastname, String login, String password) {
         this.id = id;
@@ -15,6 +14,16 @@ public class User {
         this.lastname = lastname;
         this.login = login;
         this.password = password;
+        role = Role.USER;
+    }
+
+    public User(Integer id, String name, String lastname, String login, String password, Role role) {
+        this.id = id;
+        this.name = name;
+        this.lastname = lastname;
+        this.login = login;
+        this.password = password;
+        this.role = role;
     }
 
     public String getName() {
@@ -35,5 +44,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

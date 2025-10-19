@@ -2,32 +2,20 @@ package fazulzyanov.filter;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebFilter(urlPatterns = "/*", filterName = "Authentication")
-public class AuthenticationFilter implements Filter {
-
+public class AuthenticationFilter extends HttpFilter {
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        Filter.super.init(filterConfig);
-    }
-
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpSession session = ((HttpServletRequest) request).getSession(false);
-        if (session == null && !((HttpServletRequest) request).getRequestURI().contains("login")
-        && !((HttpServletRequest) request).getRequestURI().contains("sign_up")) {
-            ((HttpServletResponse) response).sendRedirect("/login");
-        } else {
-            chain.doFilter(request, response);
+    protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
+        HttpSession session = req.getSession(false);
+        if (session == null && !req.getRequestURI().contains("login") && !req.getRequestURI().contains("sign_up")) {
+            res.sendRedirect("/login");
         }
-    }
-
-    @Override
-    public void destroy() {
-        Filter.super.destroy();
+        chain.doFilter(req, res);
     }
 }
