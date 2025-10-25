@@ -7,7 +7,6 @@
     $(document).on("input", "#login", function () {
     var formData = {
         name: $('#name').val(),
-        lastname: $('#lastname').val(),
         login: $('#login').val(),
         password: $('#password').val(),
     };
@@ -17,7 +16,7 @@
             $("#loginStatus").text("Логин занят")
             $('#submitBtn').prop('disabled', true);
         } else {
-            $("#loginStatus").text("Логин свободен")
+            $("#loginStatus").text("")
             $('#submitBtn').prop('disabled', false);
         }
     })
@@ -26,20 +25,35 @@
 
 <#macro content>
 
-    <form method="post" action="/sign_up">
-        Name:
-        <input type="text" name="name">
-        Lastname:
-        <input type="text" name="lastname">
-        <br>
-        Login:
-        <input type="text" name="login" id="login" placeholder="type your login here">
-        Password:
-        <input type="password" name="password">
-        <br>
-        <span id="loginStatus"></span>
-        <input type="submit" id="submitBtn" value="Sign Up">
+    <form method="post" action="/sign_up" class="container mt-4" style="max-width: 500px;" id="registrationForm">
+        <h3 class="mb-4">Регистрация</h3>
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Ваше ФИО:</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Введите ваше полное имя" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="login" class="form-label">Email:</label>
+            <input type="email" class="form-control" id="login" name="login"
+                   placeholder="Должен оканчиваться на @kpfu.ru" required>
+            <div class="form-text">Используйте корпоративную почту @kpfu.ru</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Пароль:</label>
+            <input type="password" class="form-control" id="password" name="password"
+                   placeholder="Создайте надежный пароль" required minlength="6">
+        </div>
+
+        <div class="mb-3">
+            <span id="loginStatus" class="form-text"></span>
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn btn-primary w-100">Зарегистрироваться</button>
     </form>
+
+    <script src="${pageContext.request.contextPath}/js/sign_up_validation.js"></script>
 
 </#macro>
 
