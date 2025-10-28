@@ -1,6 +1,5 @@
 package fazulzyanov.servlets;
 
-import fazulzyanov.main.Main;
 import fazulzyanov.services.UserService;
 
 import javax.servlet.ServletException;
@@ -11,10 +10,16 @@ import java.io.IOException;
 @WebServlet(name = "Login", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
 
-    private final UserService userService = Main.getUserService();
+    private UserService userService;
+
+    @Override
+    public void init() throws ServletException {
+        userService = (UserService) getServletContext().getAttribute("userService");
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        req.setAttribute("contextPath", req.getContextPath());
         req.getRequestDispatcher("login.ftl").forward(req, resp);
     }
 
@@ -22,7 +27,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String submit = req.getParameter("submit");
         if (submit.equals("Sign Up")) {
-            resp.sendRedirect("/sign_up");
+            resp.sendRedirect(req.getContextPath() + "/sign_up");
             // without return, the server crashes
             return;
         }
@@ -46,7 +51,7 @@ public class LoginServlet extends HttpServlet {
             // without return, the server crashes
             return;
         }
-        resp.sendRedirect("/login");
+        resp.sendRedirect(req.getContextPath() + "/login");
     }
 
 }

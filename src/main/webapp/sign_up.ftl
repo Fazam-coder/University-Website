@@ -11,12 +11,12 @@
         password: $('#password').val(),
     };
 
-    $.get("/check-login?login=" + formData.login.trim(), function (response) {
+    $.get("check-login?login=" + formData.login.trim(), function (response) {
         if (response === "true") {
-            $("#loginStatus").text("Логин занят")
+            $("#loginExists").text("Логин занят")
             $('#submitBtn').prop('disabled', true);
         } else {
-            $("#loginStatus").text("")
+            $("#loginExists").text("")
             $('#submitBtn').prop('disabled', false);
         }
     })
@@ -25,7 +25,7 @@
 
 <#macro content>
 
-    <form method="post" action="/sign_up" class="container mt-4" style="max-width: 500px;" id="registrationForm">
+    <form method="post" action="sign_up" class="container mt-4" style="max-width: 500px;" id="registrationForm">
         <h3 class="mb-4">Регистрация</h3>
 
         <div class="mb-3">
@@ -49,11 +49,17 @@
         <div class="mb-3">
             <span id="loginStatus" class="form-text"></span>
         </div>
+        <div class="mb-3">
+            <span id="loginExists" class="form-text text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <span id="passwordStatus" class="form-text"></span>
+        </div>
 
         <button type="submit" id="submitBtn" class="btn btn-primary w-100">Зарегистрироваться</button>
     </form>
 
-    <script src="${pageContext.request.contextPath}/js/sign_up_validation.js"></script>
+    <script src="${contextPath}/js/sign_up_validation.js"></script>
 
 </#macro>
 

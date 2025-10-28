@@ -5,7 +5,7 @@
 
 <#macro content>
 
-    <form method="post" action="/login" class="container mt-4">
+    <form method="post" action="login" class="container mt-4">
         <div class="mb-3">
             <label for="login" class="form-label">Логин или email:</label>
             <input type="text" class="form-control" id="login" name="login" placeholder="Type your login here">

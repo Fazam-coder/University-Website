@@ -11,8 +11,8 @@
 
 <body>
 <div id="header">
-    <h3>Header 12345</h3>
-    <a href="/logout">Выйти</a>
+    <h3>КФУ ИТИС</h3>
+    <a href="logout">Выйти</a>
     <br>
 </div>
 

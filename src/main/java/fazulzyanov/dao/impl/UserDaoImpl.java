@@ -14,7 +14,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> getAll() {
-        String sql = "select * from users inner join role on users.role_id = role.id";
+        String sql = "select * from users inner join roles on users.role_id = roles.id";
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
@@ -25,10 +25,11 @@ public class UserDaoImpl implements UserDao {
                             new User(
                                     resultSet.getInt("id"),
                                     resultSet.getString("name"),
-                                    resultSet.getString("lastname"),
                                     resultSet.getString("login"),
                                     resultSet.getString("password"),
-                                    getRole(resultSet.getString("role"))
+                                    resultSet.getString("image_path"),
+                                    resultSet.getString("about_info"),
+                                    getRole(resultSet.getString("role_name"))
                             )
                     );
                 }
@@ -41,13 +42,14 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void save(User user) {
-        String sql = "insert into users (name, lastname, login, password) values (?, ?, ?, ?)";
+        String sql = "insert into users (name, login, password, image_path, about_info) values (?, ?, ?, ?, ?)";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getLastname());
-            preparedStatement.setString(3, user.getLogin());
-            preparedStatement.setString(4, user.getPassword());
+            preparedStatement.setString(2, user.getLogin());
+            preparedStatement.setString(3, user.getPassword());
+            preparedStatement.setString(4, user.getImagePath());
+            preparedStatement.setString(5, user.getAboutInfo());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -56,7 +58,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getById(Integer id) throws IllegalArgumentException {
-        String sql = "select * from users inner join role on users.role_id = role.id where id = ?";
+        String sql = "select * from users inner join roles on users.role_id = roles.id where id = ?";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
@@ -68,7 +70,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getByLogin(String login) throws IllegalArgumentException {
-        String sql = "select * from users inner join role on users.role_id = role.id where login = ?";
+        String sql = "select * from users inner join roles on users.role_id = roles.id where login = ?";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, login);
@@ -84,13 +86,41 @@ public class UserDaoImpl implements UserDao {
             return new User(
                     resultSet.getInt("id"),
                     resultSet.getString("name"),
-                    resultSet.getString("lastname"),
                     resultSet.getString("login"),
                     resultSet.getString("password"),
-                    getRole(resultSet.getString("role"))
+                    resultSet.getString("image_path"),
+                    resultSet.getString("about_info"),
+                    getRole(resultSet.getString("role_name"))
             );
         }
         throw new IllegalArgumentException();
+    }
+
+    @Override
+    public void update(String login, String name, String imagePath, String aboutInfo) {
+        String sql = "update users set name = ?, image_path = ?, about_info = ? where login = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, imagePath);
+            preparedStatement.setString(3, aboutInfo);
+            preparedStatement.setString(4, login);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void delete(String login) {
+        String sql = "delete users where login = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, login);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Role getRole(String role) {

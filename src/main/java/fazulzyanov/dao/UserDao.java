@@ -12,4 +12,8 @@ public interface UserDao {
     User getById(Integer id);
 
     User getByLogin(String login);
+
+    void update(String login, String name, String imagePath, String aboutInfo);
+
+    void delete(String login);
 }

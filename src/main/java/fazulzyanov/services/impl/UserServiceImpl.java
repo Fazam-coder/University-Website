@@ -3,7 +3,6 @@ package fazulzyanov.services.impl;
 import fazulzyanov.dto.UserDto;
 import fazulzyanov.dao.UserDao;
 import fazulzyanov.entity.User;
-import fazulzyanov.main.Main;
 import fazulzyanov.services.UserService;
 import fazulzyanov.util.PasswordUtil;
 
@@ -11,20 +10,35 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
-    private final UserDao userDao = Main.getUserDao();
+    private final UserDao userDao;
+
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
     public List<UserDto> getAll() {
         return userDao.getAll().stream()
-                .map(user -> new UserDto(user.getName(), user.getLogin())).toList();
+                .map(user -> new UserDto(user.getName(), user.getLogin(), user.getImagePath(), user.getAboutInfo()))
+                .toList();
     }
 
     @Override
-    public void save(String name, String lastname, String login, String password) {
+    public void save(String name, String login, String password) {
         password = PasswordUtil.encrypt(password);
         // default value
         Integer id = 1;
-        userDao.save(new User(id, name, lastname, login, password));
+        userDao.save(new User(id, name, login, password));
+    }
+
+    @Override
+    public void update(String login, String name, String imagePath, String aboutInfo) {
+        userDao.update(login, name, imagePath, aboutInfo);
+    }
+
+    @Override
+    public void delete(String login) {
+        userDao.delete(login);
     }
 
     @Override
