@@ -13,7 +13,7 @@ public class LoginServlet extends HttpServlet {
     private UserService userService;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         userService = (UserService) getServletContext().getAttribute("userService");
     }
 
@@ -37,6 +37,7 @@ public class LoginServlet extends HttpServlet {
             // session
             HttpSession httpSession = req.getSession();
             httpSession.setAttribute("user", login);
+            httpSession.setAttribute("role", userService.getRole(login));
             httpSession.setMaxInactiveInterval(60 * 60);
 
             // cookie
@@ -44,9 +45,8 @@ public class LoginServlet extends HttpServlet {
             cookie.setMaxAge(24 * 60 * 60);
 
             resp.addCookie(cookie);
-            req.setAttribute("sessionUser", httpSession.getAttribute("user"));
-            req.setAttribute("cookies", req.getCookies());
-            req.setAttribute("session", httpSession);
+            req.setAttribute("students", userService.getAllStudents());
+            req.setAttribute("teachers", userService.getAllTeachers());
             req.getRequestDispatcher("users.ftl").forward(req, resp);
             // without return, the server crashes
             return;

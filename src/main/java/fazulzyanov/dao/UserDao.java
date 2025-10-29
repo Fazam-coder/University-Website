@@ -16,4 +16,6 @@ public interface UserDao {
     void update(String login, String name, String imagePath, String aboutInfo);
 
     void delete(String login);
+
+    void updateRole(String login, String role);
 }

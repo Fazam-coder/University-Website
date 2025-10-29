@@ -2,10 +2,12 @@ package fazulzyanov.services.impl;
 
 import fazulzyanov.dto.UserDto;
 import fazulzyanov.dao.UserDao;
+import fazulzyanov.entity.Role;
 import fazulzyanov.entity.User;
 import fazulzyanov.services.UserService;
 import fazulzyanov.util.PasswordUtil;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
@@ -19,7 +21,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getAll() {
         return userDao.getAll().stream()
-                .map(user -> new UserDto(user.getName(), user.getLogin(), user.getImagePath(), user.getAboutInfo()))
+                .map(user -> new UserDto(user.getName(), user.getLogin(), user.getImagePath(),
+                        user.getAboutInfo(), user.getRole()))
                 .toList();
     }
 
@@ -59,5 +62,26 @@ public class UserServiceImpl implements UserService {
         } catch (IllegalArgumentException e) {
             return false;
         }
+    }
+
+    @Override
+    public List<UserDto> getAllStudents() {
+        return getAll().stream()
+                .filter(u -> u.getRole() == Role.STUDENT)
+                .sorted(Comparator.comparing(UserDto::getName))
+                .toList();
+    }
+
+    @Override
+    public List<UserDto> getAllTeachers() {
+        return getAll().stream()
+                .filter(u -> u.getRole() == Role.TEACHER)
+                .sorted(Comparator.comparing(UserDto::getName))
+                .toList();
+    }
+
+    @Override
+    public Role getRole(String login) {
+        return userDao.getByLogin(login).getRole();
     }
 }

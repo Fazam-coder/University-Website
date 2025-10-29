@@ -123,6 +123,20 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
+    @Override
+    public void updateRole(String login, String role) {
+        String sql = "update users set role_id = (select roles.id from roles where role_name = ?) " +
+                "where login = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, role);
+            preparedStatement.setString(2, login);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private Role getRole(String role) {
         return switch (role) {
             case "admin" -> Role.ADMIN;

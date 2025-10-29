@@ -20,6 +20,20 @@ create table application_types (
     pattern text default ''
 )
 
+create table students (
+    user_id int unique not null,
+    group_name varchar(15) not null,
+    foreign key (user_id) references users(id) on update cascade on delete cascade
+)
+
+create table lessons (
+    id serial primary key,
+    group_name varchar(15) not null,
+    lesson varchar(31) not null,
+    teacher_id int not null,
+    foreign key (teacher_id) references users(id) on update cascade
+)
+
 insert into roles (role_name) values ('admin')
 insert into roles (role_name) values ('teacher')
 insert into roles (role_name) values ('student')

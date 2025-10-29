@@ -1,6 +1,7 @@
 package fazulzyanov.services;
 
 import fazulzyanov.dto.UserDto;
+import fazulzyanov.entity.Role;
 
 import java.util.List;
 
@@ -16,4 +17,10 @@ public interface UserService {
     void update(String login, String name, String imagePath, String aboutInfo);
 
     void delete(String login);
+
+    List<UserDto> getAllStudents();
+
+    List<UserDto> getAllTeachers();
+
+    Role getRole(String login);
 }
