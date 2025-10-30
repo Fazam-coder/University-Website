@@ -20,7 +20,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         req.setAttribute("contextPath", req.getContextPath());
-        req.getRequestDispatcher("login.ftl").forward(req, resp);
+        req.getRequestDispatcher("/login.ftl").forward(req, resp);
     }
 
     @Override
@@ -45,9 +45,7 @@ public class LoginServlet extends HttpServlet {
             cookie.setMaxAge(24 * 60 * 60);
 
             resp.addCookie(cookie);
-            req.setAttribute("students", userService.getAllStudents());
-            req.setAttribute("teachers", userService.getAllTeachers());
-            req.getRequestDispatcher("users.ftl").forward(req, resp);
+            resp.sendRedirect(req.getContextPath() + "/");
             // without return, the server crashes
             return;
         }

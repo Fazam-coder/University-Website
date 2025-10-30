@@ -32,6 +32,6 @@ public class LogoutServlet extends HttpServlet {
             }
         }
 
-        req.getRequestDispatcher("login.ftl").forward(req, resp);
+        req.getRequestDispatcher("/login.ftl").forward(req, resp);
     }
 }

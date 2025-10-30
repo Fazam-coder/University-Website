@@ -28,6 +28,9 @@ public class LoggingFilter extends HttpFilter {
         Map<String, String[]> params = req.getParameterMap();
 
         if (params != null) {
+            if (params.containsKey("password")) {
+                params.get("password")[0] = null;
+            }
             String paramStr = params.entrySet().stream().map(
                     e -> e.getKey() + "=" + Arrays.toString(e.getValue())
             ).collect(Collectors.joining(", ", "{", "}"));

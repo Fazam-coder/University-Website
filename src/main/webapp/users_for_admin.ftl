@@ -22,31 +22,33 @@
         <div class="tab-content mt-3" id="userTabsContent">
 
             <div class="tab-pane fade show active" id="non-role" role="tabpanel">
-                <#if nonRoles?has_content>
-                    <table class="table table-striped table-bordered">
-                        <thead class="table-light">
-                        <tr>
-                            <th>ФИО</th>
-                            <th>Email</th>
-                            <th>Фотография</th>
-                            <th>Ссылка</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <#list nonRoles as nonRole>
+                    <form method="post">
+                        <#if nonRoles?has_content>
+                        <table class="table table-striped table-bordered">
+                            <thead class="table-light">
                             <tr>
-                                <td>${nonRole.name!""}</td>
-                                <td>${nonRole.login!""}</td>
-                                <td><img src="${nonRole.imagePath!""}"></td>
-                                <td><a href="profile?id=${nonRole.id}">Ссылка</a></td>
+                                <th>ФИО</th>
+                                <th>Email</th>
+                                <th>Фотография</th>
+<#--                                <th>Ссылка</th>-->
                             </tr>
-                        </#list>
-                        </tbody>
-                    </table>
-                    <button type="submit" name="submit" value="save" class="btn btn-primary me-2">Сохранить</button>
-                <#else>
-                    <p class="text-muted">Нет пользователей без ролей</p>
-                </#if>
+                            </thead>
+                            <tbody>
+                            <#list nonRoles as nonRole>
+                                <tr>
+                                    <td>${nonRole.name!""}</td>
+                                    <td>${nonRole.login!""}</td>
+                                    <td><img src="${nonRole.imagePath!""}"></td>
+<#--                                    <td><a href="profile?id=${nonRole.id}">Ссылка</a></td>-->
+                                </tr>
+                            </#list>
+                            </tbody>
+                        </table>
+                        <button type="submit" name="submit" value="save" class="btn btn-primary me-2">Сохранить</button>
+                        <#else>
+                            <p class="text-muted">Нет пользователей без ролей</p>
+                        </#if>
+                    </form>
             </div>
 
             <div class="tab-pane fade" id="all" role="tabpanel">
@@ -57,7 +59,7 @@
                             <th>ФИО</th>
                             <th>Email</th>
                             <th>Фотография</th>
-                            <th>Ссылка</th>
+<#--                            <th>Ссылка</th>-->
                             <th>Роль</th>
                         </tr>
                         </thead>
@@ -67,7 +69,7 @@
                                 <td>${user.name!""}</td>
                                 <td>${user.login!""}</td>
                                 <td><img src="${user.imagePath!""}"></td>
-                                <td><a href="profile?id=${user.id}">Ссылка</a></td>
+<#--                                <td><a href="profile?id=${user.id}">Ссылка</a></td>-->
                                 <td>${user.role!""}</td>
                             </tr>
                         </#list>
@@ -79,6 +81,6 @@
             </div>
         </div>
     </div>
-    <script src="js/users.js"></script>
+    <script src="${contextPath}/js/users.js"></script>
 
 </#macro>

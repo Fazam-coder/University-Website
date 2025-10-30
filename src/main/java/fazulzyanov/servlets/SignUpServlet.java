@@ -22,7 +22,7 @@ public class SignUpServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         req.setAttribute("contextPath", req.getContextPath());
-        req.getRequestDispatcher("sign_up.ftl").forward(req, resp);
+        req.getRequestDispatcher("/sign_up.ftl").forward(req, resp);
     }
 
     @Override
