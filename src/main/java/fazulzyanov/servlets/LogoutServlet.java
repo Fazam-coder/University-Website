@@ -31,7 +31,7 @@ public class LogoutServlet extends HttpServlet {
                 resp.addCookie(c);
             }
         }
-
+        req.setAttribute("contextPath", req.getContextPath());
         req.getRequestDispatcher("/login.ftl").forward(req, resp);
     }
 }

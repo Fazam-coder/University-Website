@@ -1,26 +1,41 @@
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title><@title></@title></title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Опционально: убрать дефолтные отступы у header */
+        #header {
+            padding: 0.75rem 1rem;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+    </style>
 </head>
-
 <body>
-<div id="header">
-    <h3>КФУ ИТИС</h3>
-    <a href="logout">Выйти</a>
-    <br>
-</div>
 
-<div id="content">
-    <div class="content">
-        <@content></@content>
+<div id="header" class="d-flex align-items-center">
+    <!-- Слева: логотип/название -->
+    <div class="me-auto">
+        <h3 class="mb-0">КФУ ИТИС</h3>
+    </div>
+
+    <!-- По центру: кнопка "На главную" -->
+    <div>
+        <a href="${contextPath}/users" class="btn btn-outline-primary">На главную</a>
+    </div>
+
+    <!-- Справа: профиль и выход -->
+    <div class="ms-auto d-flex gap-2">
+        <a href="${contextPath}/profile" class="btn btn-outline-secondary">Профиль</a>
+        <a href="${contextPath}/logout" class="btn btn-outline-danger">Выйти</a>
     </div>
 </div>
-</body>
 
+<div id="content" class="container mt-4">
+    <@content></@content>
+</div>
+
+</body>
 </html>

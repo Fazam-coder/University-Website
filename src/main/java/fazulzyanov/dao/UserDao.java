@@ -13,9 +13,11 @@ public interface UserDao {
 
     User getByLogin(String login);
 
-    void update(String login, String name, String imagePath, String aboutInfo);
+    String getGroup(Integer id);
+
+    void update(Integer id, String name, String imagePath, String aboutInfo);
 
     void delete(String login);
 
-    void updateRole(String login, String role);
+    void updateRole(Integer id, String role);
 }

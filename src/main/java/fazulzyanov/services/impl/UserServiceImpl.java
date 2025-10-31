@@ -21,9 +21,34 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getAll() {
         return userDao.getAll().stream()
-                .map(user -> new UserDto(user.getName(), user.getLogin(), user.getImagePath(),
+                .map(user -> new UserDto(user.getId(), user.getName(), user.getLogin(), user.getImagePath(),
                         user.getAboutInfo(), user.getRole()))
                 .toList();
+    }
+
+    @Override
+    public UserDto getById(Integer id) {
+        User user = userDao.getById(id);
+        if (user == null) {
+            throw new IllegalArgumentException();
+        }
+        return new UserDto(user.getId(), user.getName(), user.getLogin(),
+                user.getImagePath(), user.getAboutInfo(), user.getRole());
+    }
+
+    @Override
+    public UserDto getByLogin(String login) {
+        User user = userDao.getByLogin(login);
+        if (user == null) {
+            throw new IllegalArgumentException();
+        }
+        return new UserDto(user.getId(), user.getName(), user.getLogin(),
+                user.getImagePath(), user.getAboutInfo(), user.getRole());
+    }
+
+    @Override
+    public String getGroup(Integer id) {
+        return userDao.getGroup(id);
     }
 
     @Override
@@ -35,8 +60,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(String login, String name, String imagePath, String aboutInfo) {
-        userDao.update(login, name, imagePath, aboutInfo);
+    public void update(Integer id, String name, String imagePath, String aboutInfo) {
+        userDao.update(id, name, imagePath, aboutInfo);
+    }
+
+    @Override
+    public void updateRole(Integer id, Role role) {
+        userDao.updateRole(id, role.name());
     }
 
     @Override

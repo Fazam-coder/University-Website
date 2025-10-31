@@ -45,7 +45,7 @@ public class LoginServlet extends HttpServlet {
             cookie.setMaxAge(24 * 60 * 60);
 
             resp.addCookie(cookie);
-            resp.sendRedirect(req.getContextPath() + "/");
+            resp.sendRedirect(req.getContextPath() + "/users");
             // without return, the server crashes
             return;
         }

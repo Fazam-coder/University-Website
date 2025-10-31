@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/")
+@WebServlet("/users")
 public class UsersServlet extends HttpServlet {
 
     private UserService userService;
@@ -23,6 +23,7 @@ public class UsersServlet extends HttpServlet {
         req.setAttribute("contextPath", req.getContextPath());
         req.setAttribute("students", userService.getAllStudents());
         req.setAttribute("teachers", userService.getAllTeachers());
+        req.setAttribute("role", req.getSession().getAttribute("role"));
         req.getRequestDispatcher("/users.ftl").forward(req, resp);
     }
 }

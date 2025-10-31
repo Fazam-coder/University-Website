@@ -22,7 +22,7 @@
         <div class="tab-content mt-3" id="userTabsContent">
 
             <div class="tab-pane fade show active" id="non-role" role="tabpanel">
-                    <form method="post">
+                    <form method="post" action="${contextPath}/admin/users">
                         <#if nonRoles?has_content>
                         <table class="table table-striped table-bordered">
                             <thead class="table-light">
@@ -30,7 +30,7 @@
                                 <th>ФИО</th>
                                 <th>Email</th>
                                 <th>Фотография</th>
-<#--                                <th>Ссылка</th>-->
+                                <th>Ссылка</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -39,7 +39,15 @@
                                     <td>${nonRole.name!""}</td>
                                     <td>${nonRole.login!""}</td>
                                     <td><img src="${nonRole.imagePath!""}"></td>
-<#--                                    <td><a href="profile?id=${nonRole.id}">Ссылка</a></td>-->
+                                    <td><a href="${contextPath}/profile?id=${nonRole.id}">Ссылка</a></td>
+                                    <td>
+                                        <!-- Выпадающий список для выбора роли -->
+                                        <select name="role_${nonRole.id}" class="form-select form-select-sm">
+                                            <option value="USER" selected>USER</option>
+                                            <option value="STUDENT">STUDENT</option>
+                                            <option value="TEACHER">TEACHER</option>
+                                        </select>
+                                    </td>
                                 </tr>
                             </#list>
                             </tbody>
@@ -59,7 +67,7 @@
                             <th>ФИО</th>
                             <th>Email</th>
                             <th>Фотография</th>
-<#--                            <th>Ссылка</th>-->
+                            <th>Ссылка</th>
                             <th>Роль</th>
                         </tr>
                         </thead>
@@ -69,7 +77,7 @@
                                 <td>${user.name!""}</td>
                                 <td>${user.login!""}</td>
                                 <td><img src="${user.imagePath!""}"></td>
-<#--                                <td><a href="profile?id=${user.id}">Ссылка</a></td>-->
+                                <td><a href="${contextPath}/profile?id=${user.id}">Ссылка</a></td>
                                 <td>${user.role!""}</td>
                             </tr>
                         </#list>

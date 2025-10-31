@@ -3,6 +3,9 @@
 <#macro title>Пользователи</#macro>
 
 <#macro content>
+    <#if role == "ADMIN">
+        <a href="${contextPath}/admin/users">Управление пользователями</a>
+    </#if>
     <div class="container mt-4">
         <h2>Все пользователи</h2>
 
