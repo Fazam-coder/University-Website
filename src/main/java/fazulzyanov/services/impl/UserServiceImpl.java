@@ -1,5 +1,6 @@
 package fazulzyanov.services.impl;
 
+import fazulzyanov.dto.StudentDto;
 import fazulzyanov.dto.UserDto;
 import fazulzyanov.dao.UserDao;
 import fazulzyanov.entity.Role;
@@ -8,7 +9,9 @@ import fazulzyanov.services.UserService;
 import fazulzyanov.util.PasswordUtil;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserServiceImpl implements UserService {
 
@@ -60,6 +63,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void saveGroups(Map<Integer, String> newGroups) {
+        Map<Integer, String> oldGroups = userDao.getAllGroups();
+        for (Map.Entry<Integer, String> entry : newGroups.entrySet()) {
+            Integer id = entry.getKey();
+            String group = entry.getValue();
+            if (oldGroups.containsKey(id) && !oldGroups.get(id).equals(group)) {
+                if (group == null || group.isEmpty()) {
+                    userDao.deleteGroup(id);
+                } else {
+                    userDao.updateGroup(id, group);
+                }
+            } else if (!oldGroups.containsKey(id)) {
+                userDao.addGroup(id, group);
+            }
+        }
+    }
+
+    @Override
     public void update(Integer id, String name, String imagePath, String aboutInfo) {
         userDao.update(id, name, imagePath, aboutInfo);
     }
@@ -70,8 +91,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(String login) {
-        userDao.delete(login);
+    public void delete(Integer id) {
+        userDao.delete(id);
     }
 
     @Override
@@ -95,10 +116,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAllStudents() {
-        return getAll().stream()
-                .filter(u -> u.getRole() == Role.STUDENT)
-                .sorted(Comparator.comparing(UserDto::getName))
+    public List<StudentDto> getAllStudents() {
+        return userDao.getAllStudents().stream()
+                .map(s -> new StudentDto(s.getId(), s.getName(), s.getLogin(), s.getImagePath(),
+                        s.getAboutInfo(), s.getRole(), s.getGroup()))
+                .sorted(Comparator.comparing(StudentDto::getName))
                 .toList();
     }
 

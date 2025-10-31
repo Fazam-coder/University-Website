@@ -17,6 +17,11 @@
                     Все пользователи
                 </button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="students-tab" data-tab="students" type="button" role="tab">
+                    Студенты (для добавления в группы)
+                </button>
+            </li>
         </ul>
 
         <div class="tab-content mt-3" id="userTabsContent">
@@ -29,8 +34,8 @@
                             <tr>
                                 <th>ФИО</th>
                                 <th>Email</th>
-                                <th>Фотография</th>
                                 <th>Ссылка</th>
+                                <th>Роль</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -38,10 +43,8 @@
                                 <tr>
                                     <td>${nonRole.name!""}</td>
                                     <td>${nonRole.login!""}</td>
-                                    <td><img src="${nonRole.imagePath!""}"></td>
                                     <td><a href="${contextPath}/profile?id=${nonRole.id}">Ссылка</a></td>
                                     <td>
-                                        <!-- Выпадающий список для выбора роли -->
                                         <select name="role_${nonRole.id}" class="form-select form-select-sm">
                                             <option value="USER" selected>USER</option>
                                             <option value="STUDENT">STUDENT</option>
@@ -52,7 +55,7 @@
                             </#list>
                             </tbody>
                         </table>
-                        <button type="submit" name="submit" value="save" class="btn btn-primary me-2">Сохранить</button>
+                        <button type="submit" name="submit" value="save_roles" class="btn btn-primary me-2">Сохранить</button>
                         <#else>
                             <p class="text-muted">Нет пользователей без ролей</p>
                         </#if>
@@ -61,31 +64,65 @@
 
             <div class="tab-pane fade" id="all" role="tabpanel">
                 <#if allUsers?has_content>
-                    <table class="table table-striped table-bordered">
-                        <thead class="table-light">
-                        <tr>
-                            <th>ФИО</th>
-                            <th>Email</th>
-                            <th>Фотография</th>
-                            <th>Ссылка</th>
-                            <th>Роль</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <#list allUsers as user>
+                    <form method="post" action="${contextPath}/admin/users">
+                        <table class="table table-striped table-bordered">
+                            <thead class="table-light">
                             <tr>
-                                <td>${user.name!""}</td>
-                                <td>${user.login!""}</td>
-                                <td><img src="${user.imagePath!""}"></td>
-                                <td><a href="${contextPath}/profile?id=${user.id}">Ссылка</a></td>
-                                <td>${user.role!""}</td>
+                                <th>ФИО</th>
+                                <th>Email</th>
+                                <th>Ссылка</th>
+                                <th>Роль</th>
+                                <th>Удаление</th>
                             </tr>
-                        </#list>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            <#list allUsers as user>
+                                <tr>
+                                    <td>${user.name!""}</td>
+                                    <td>${user.login!""}</td>
+                                    <td><a href="${contextPath}/profile?id=${user.id}">Ссылка</a></td>
+                                    <td>${user.role!""}</td>
+                                    <td><button type="submit" name="submit" value="delete_${user.id}" class="btn btn-outline-danger">Удалить</button> </td>
+                                </tr>
+                            </#list>
+                            </tbody>
+                        </table>
+                    </form>
                 <#else>
                     <p class="text-muted">Нет пользователей</p>
                 </#if>
+            </div>
+
+            <div class="tab-pane fade" id="students" role="tabpanel">
+                <form method="post" action="${contextPath}/admin/users">
+                    <#if students?has_content>
+                        <table class="table table-striped table-bordered">
+                            <thead class="table-light">
+                            <tr>
+                                <th>ФИО</th>
+                                <th>Email</th>
+                                <th>Ссылка</th>
+                                <th>Группа</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <#list students as student>
+                                <tr>
+                                    <td>${student.name!""}</td>
+                                    <td>${student.login!""}</td>
+                                    <td><a href="${contextPath}/profile?id=${student.id}">Ссылка</a></td>
+                                    <td>
+                                        <input type="text" class="form-control" name="group_${student.id}" value="${student.group!""}">
+                                    </td>
+                                </tr>
+                            </#list>
+                            </tbody>
+                        </table>
+                        <button type="submit" name="submit" value="save_groups" class="btn btn-primary me-2">Сохранить</button>
+                    <#else>
+                        <p class="text-muted">Нет студентов без групп</p>
+                    </#if>
+                </form>
             </div>
         </div>
     </div>

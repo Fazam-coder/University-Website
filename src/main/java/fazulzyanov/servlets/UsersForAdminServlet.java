@@ -1,5 +1,6 @@
 package fazulzyanov.servlets;
 
+import fazulzyanov.dto.StudentDto;
 import fazulzyanov.dto.UserDto;
 import fazulzyanov.entity.Role;
 import fazulzyanov.services.UserService;
@@ -10,7 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "UsersForAdmin", urlPatterns = "/admin/users")
 public class UsersForAdminServlet extends HttpServlet {
@@ -27,8 +30,10 @@ public class UsersForAdminServlet extends HttpServlet {
         List<UserDto> nonRoles = allUsers.stream()
                 .filter(u -> u.getRole() == Role.USER)
                 .toList();
+        List<StudentDto> students = userService.getAllStudents();
         req.setAttribute("allUsers", allUsers);
         req.setAttribute("nonRoles", nonRoles);
+        req.setAttribute("students", students);
         req.setAttribute("contextPath", req.getServletContext().getContextPath());
         req.getRequestDispatcher("/users_for_admin.ftl").forward(req, resp);
     }
@@ -37,7 +42,7 @@ public class UsersForAdminServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String submit = req.getParameter("submit");
-            if ("save".equals(submit)) {
+            if ("save_roles".equals(submit)) {
                 List<UserDto> nonRoles = userService.getAll().stream()
                         .filter(u -> u.getRole() == Role.USER)
                         .toList();
@@ -50,6 +55,21 @@ public class UsersForAdminServlet extends HttpServlet {
                         }
                     }
                 }
+                resp.sendRedirect(req.getContextPath() + "/admin/users");
+            }
+            if (submit.contains("delete")) {
+                Integer userId = Integer.parseInt(submit.substring("delete_".length()));
+                userService.delete(userId);
+                resp.sendRedirect(req.getContextPath() + "/admin/users");
+            }
+            if (submit.equals("save_groups")) {
+                List<StudentDto> students = userService.getAllStudents();
+                Map<Integer, String> groups = new HashMap<>();
+                for (StudentDto student : students) {
+                    String param = req.getParameter("group_" + student.getId());
+                    groups.put(student.getId(), param);
+                }
+                userService.saveGroups(groups);
                 resp.sendRedirect(req.getContextPath() + "/admin/users");
             }
         } catch (Exception e) {e.printStackTrace();}

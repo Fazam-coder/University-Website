@@ -32,7 +32,6 @@
                             <th>ФИО</th>
                             <th>Группа</th>
                             <th>Email</th>
-                            <th>Фотография</th>
                             <th>Ссылка</th>
                         </tr>
                         </thead>
@@ -42,7 +41,6 @@
                                 <td>${student.name!""}</td>
                                 <td>${student.group!""}</td>
                                 <td>${student.login!""}</td>
-                                <td><img src="${student.imagePath!""}"></td>
                                 <td><a href="profile?id=${student.id}">Ссылка</a></td>
                             </tr>
                         </#list>
@@ -60,7 +58,6 @@
                         <tr>
                             <th>ФИО</th>
                             <th>Email</th>
-                            <th>Фотография</th>
                             <th>Ссылка</th>
                         </tr>
                         </thead>
@@ -69,7 +66,6 @@
                             <tr>
                                 <td>${teacher.name!""}</td>
                                 <td>${teacher.login!""}</td>
-                                <td><img src="${teacher.imagePath!""}"></td>
                                 <td><a href="profile?id=${teacher.id}">Ссылка</a></td>
                             </tr>
                         </#list>

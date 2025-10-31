@@ -1,9 +1,11 @@
 package fazulzyanov.services;
 
+import fazulzyanov.dto.StudentDto;
 import fazulzyanov.dto.UserDto;
 import fazulzyanov.entity.Role;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
     List<UserDto> getAll();
@@ -16,6 +18,8 @@ public interface UserService {
 
     void save(String name, String login, String password);
 
+    void saveGroups(Map<Integer, String> groups);
+
     boolean verifyUser(String login, String password);
 
     boolean existsLogin(String login);
@@ -24,9 +28,9 @@ public interface UserService {
 
     void updateRole(Integer id, Role role);
 
-    void delete(String login);
+    void delete(Integer id);
 
-    List<UserDto> getAllStudents();
+    List<StudentDto> getAllStudents();
 
     List<UserDto> getAllTeachers();
 
