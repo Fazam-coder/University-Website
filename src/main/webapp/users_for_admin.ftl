@@ -82,7 +82,7 @@
                                     <td>${user.login!""}</td>
                                     <td><a href="${contextPath}/profile?id=${user.id}">Ссылка</a></td>
                                     <td>${user.role!""}</td>
-                                    <td><button type="submit" name="submit" value="delete_${user.id}" class="btn btn-outline-danger">Удалить</button> </td>
+                                    <td><button type="submit" name="submit" value="delete_${user.id}" class="btn btn-outline-danger">Удалить</button></td>
                                 </tr>
                             </#list>
                             </tbody>

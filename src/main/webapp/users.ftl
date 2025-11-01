@@ -5,6 +5,14 @@
 <#macro content>
     <#if role == "ADMIN">
         <a href="${contextPath}/admin/users">Управление пользователями</a>
+        <br>
+        <a href="${contextPath}/admin/lessons">Управление предметами</a>
+    </#if>
+    <#if role == "STUDENT">
+        <a href="${contextPath}/student/lessons_and_scores">Мои предметы и баллы</a>
+    </#if>
+    <#if role == "TEACHER">
+        <a href="${contextPath}/teacher/scores">Выставить баллы</a>
     </#if>
     <div class="container mt-4">
         <h2>Все пользователи</h2>
