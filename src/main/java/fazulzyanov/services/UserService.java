@@ -24,6 +24,10 @@ public interface UserService {
 
     boolean existsLogin(String login);
 
+    boolean existsGroup(String group);
+
+    boolean existsTeacher(String teacher);
+
     void update(Integer id, String name, String imagePath, String aboutInfo);
 
     void updateRole(Integer id, Role role);

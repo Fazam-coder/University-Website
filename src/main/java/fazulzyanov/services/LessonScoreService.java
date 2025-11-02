@@ -12,4 +12,6 @@ public interface LessonScoreService {
     void updateLessons(List<Lesson> newLessons);
 
     void deleteLesson(Integer lessonId);
+
+    boolean existsLesson(String group, String lessonName, String teacherName);
 }

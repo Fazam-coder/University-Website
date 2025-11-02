@@ -21,4 +21,8 @@ public interface LessonScoreDao {
     void saveScore(Score score);
 
     void updateScore(Integer studentId, Integer lessonId, Integer newScore);
+
+    void updateLesson(Lesson lesson);
+
+    void deleteLesson(Integer lessonId);
 }

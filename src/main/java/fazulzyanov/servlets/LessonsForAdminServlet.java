@@ -32,7 +32,7 @@ public class LessonsForAdminServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String submit = req.getParameter("submit");
         if (submit.equals("add_lesson")) {
-            resp.sendRedirect("/admin/add_lesson");
+            resp.sendRedirect(req.getContextPath() + "/admin/add_lesson");
             return;
         }
         if (submit.equals("save")) {

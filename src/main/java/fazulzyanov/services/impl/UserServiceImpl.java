@@ -116,6 +116,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean existsGroup(String group) {
+        Map<Integer, String> groups = userDao.getAllGroups();
+        return groups.containsValue(group);
+    }
+
+    @Override
+    public boolean existsTeacher(String teacher) {
+        List<User> users = userDao.getAll();
+        for (User user : users) {
+            if (user.getName().equals(teacher) && user.getRole().equals(Role.TEACHER)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public List<StudentDto> getAllStudents() {
         return userDao.getAllStudents().stream()
                 .map(s -> new StudentDto(s.getId(), s.getName(), s.getLogin(), s.getImagePath(),
