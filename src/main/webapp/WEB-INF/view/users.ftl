@@ -12,7 +12,7 @@
         <a href="${contextPath}/student/lessons_and_scores">Мои предметы и баллы</a>
     </#if>
     <#if role == "TEACHER">
-        <a href="${contextPath}/teacher/scores">Выставить баллы</a>
+        <a href="${contextPath}/teacher/lessons">Мои предметы</a>
     </#if>
     <div class="container mt-4">
         <h2>Все пользователи</h2>

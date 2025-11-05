@@ -22,7 +22,8 @@ public class LessonsForTeacherServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Lesson> lessons = lessonScoreService.getLessonsByTeacherLogin(req.getAttribute("user").toString());
+        String login = req.getSession().getAttribute("user").toString();
+        List<Lesson> lessons = lessonScoreService.getLessonsByTeacherLogin(login);
         req.setAttribute("lessons", lessons);
         req.setAttribute("contextPath", req.getContextPath());
         req.getRequestDispatcher("/WEB-INF/view/lessons_for_teacher.ftl").forward(req, resp);

@@ -57,7 +57,7 @@ public class LessonScoreDaoImpl implements LessonScoreDao {
 
     @Override
     public List<Lesson> getLessonsByTeacherLogin(String login) {
-        String sql = "select *, lessons.id from lessons inner join users on users.id = teacher_id where login = ?";
+        String sql = "select *, lessons.id as l_id from lessons inner join users on users.id = lessons.teacher_id where login = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             List<Lesson> lessons = new ArrayList<>();
             preparedStatement.setString(1, login);
@@ -66,7 +66,7 @@ public class LessonScoreDaoImpl implements LessonScoreDao {
                 while (resultSet.next()) {
                     lessons.add(
                             new Lesson(
-                                    resultSet.getInt("lessons.id"),
+                                    resultSet.getInt("l_id"),
                                     resultSet.getString("lesson"),
                                     resultSet.getString("group_name"),
                                     resultSet.getString("name")

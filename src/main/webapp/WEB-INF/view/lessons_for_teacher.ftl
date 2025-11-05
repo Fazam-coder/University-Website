@@ -5,7 +5,7 @@
 <#macro content>
     <div class="container mt-4">
         <h2>Выставление баллов</h2>
-        <form method="post" action="${contextPath}/teacher/lessons">+
+        <form method="post" action="${contextPath}/teacher/lessons">
             <#list lessons as lesson>
                 <br>
                 <label for="lesson_name" class="form-label">${lesson.group} ${lesson.lessonName}</label>
