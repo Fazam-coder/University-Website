@@ -10,6 +10,10 @@ public interface LessonScoreDao {
 
     Lesson getLesson(String group, String lessonName);
 
+    List<Lesson> getLessonsByTeacherLogin(String login);
+
+    List<Score> getScoresByLessonId(Integer lessonId);
+
     List<Score> getAllScores();
 
     List<Score> getGroupScores();

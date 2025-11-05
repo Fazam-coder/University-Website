@@ -14,12 +14,6 @@ create table users (
     foreign key (role_id) references roles(id) on update cascade
 )
 
-create table application_types (
-    id serial primary key,
-    type varchar(63) unique not null,
-    pattern text default ''
-)
-
 create table students (
     user_id int unique not null,
     group_name varchar(15) not null,
@@ -32,6 +26,15 @@ create table lessons (
     lesson varchar(31) not null,
     teacher_id int not null,
     foreign key (teacher_id) references users(id) on update cascade
+)
+
+create table scores (
+    id bigserial primary key,
+    student_id int not null,
+    lesson_id int not null,
+    score int not null check(score >= 0 and score <= 50),
+    foreign key (student_id) references users(id) on update cascade on delete cascade,
+    foreign key (lesson_id) references lessons(id) on update cascade on delete cascade
 )
 
 insert into roles (role_name) values ('admin')

@@ -17,10 +17,10 @@
         </div>
 
         <div class="mb-3">
-            <button type="submit" name="submit" value="login" class="btn btn-primary me-2">Login</button>
+            <button type="submit" name="submit" value="login" class="btn btn-primary me-2">Войти</button>
             <br>
             <span class="me-2">Вы не зарегистрированы?</span>
-            <button type="submit" name="submit" value="Sign Up" class="btn btn-outline-secondary">Sign Up</button>
+            <button type="submit" name="submit" value="Sign Up" class="btn btn-outline-secondary">Зарегистрироваться</button>
         </div>
     </form>
 

@@ -1,6 +1,7 @@
 package university.dao.impl;
 
 import university.dao.LessonScoreDao;
+import university.dto.StudentDto;
 import university.entity.Lesson;
 import university.entity.Score;
 import university.util.DatabaseConnectionUtil;
@@ -49,6 +50,62 @@ public class LessonScoreDaoImpl implements LessonScoreDao {
                 return new Lesson(resultSet.getInt("lessons.id"), lessonName, group, resultSet.getString("name"));
             }
             throw new IllegalArgumentException("Lesson not found");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Lesson> getLessonsByTeacherLogin(String login) {
+        String sql = "select *, lessons.id from lessons inner join users on users.id = teacher_id where login = ?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            List<Lesson> lessons = new ArrayList<>();
+            preparedStatement.setString(1, login);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    lessons.add(
+                            new Lesson(
+                                    resultSet.getInt("lessons.id"),
+                                    resultSet.getString("lesson"),
+                                    resultSet.getString("group_name"),
+                                    resultSet.getString("name")
+                            )
+                    );
+                }
+            }
+            return lessons;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Score> getScoresByLessonId(Integer lessonId) {
+        String sql = "select *, scores.id " +
+                "from scores inner join lessons on lessons.id = lesson_id inner join users on users.id = student_id" +
+                "where lesson_id = ?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, lessonId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Score> scores = new ArrayList<>();
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    Lesson lesson = new Lesson(
+                            resultSet.getInt("lessons.id"),
+                            resultSet.getString("lesson"),
+                            resultSet.getString("group_name"),
+                            resultSet.getString("name")
+                    );
+                    scores.add(new Score(
+                            resultSet.getLong("scores.id"),
+                            resultSet.getString("name"),
+                            lesson,
+                            resultSet.getInt("score")
+                    ));
+                }
+            }
+            return scores;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

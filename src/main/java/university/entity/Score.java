@@ -1,14 +1,16 @@
 package university.entity;
 
+import university.dto.StudentDto;
+
 public class Score {
     private Long id;
-    private Integer studentId;
+    private String studentName;
     private Lesson lesson;
     private Integer score;
 
-    public Score(Long id, Integer studentId, Lesson lesson, Integer score) {
+    public Score(Long id, String studentName, Lesson lesson, Integer score) {
         this.id = id;
-        this.studentId = studentId;
+        this.studentName = studentName;
         this.lesson = lesson;
         this.score = score;
     }
@@ -17,8 +19,8 @@ public class Score {
         return id;
     }
 
-    public Integer getStudentId() {
-        return studentId;
+    public String getStudentName() {
+        return studentName;
     }
 
     public Lesson getLesson() {

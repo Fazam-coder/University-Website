@@ -2,6 +2,7 @@ package university.services.impl;
 
 import university.dao.LessonScoreDao;
 import university.entity.Lesson;
+import university.entity.Score;
 import university.services.LessonScoreService;
 
 import java.util.List;
@@ -17,6 +18,16 @@ public class LessonScoreServiceImpl implements LessonScoreService {
     @Override
     public List<Lesson> getAllLessons() {
         return lessonScoreDao.getAllLessons();
+    }
+
+    @Override
+    public List<Lesson> getLessonsByTeacherLogin(String teacherLogin) {
+        return lessonScoreDao.getLessonsByTeacherLogin(teacherLogin);
+    }
+
+    @Override
+    public List<Score> getScoresByLessonId(Integer lessonId) {
+        return lessonScoreDao.getScoresByLessonId(lessonId);
     }
 
     @Override
