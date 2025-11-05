@@ -81,9 +81,30 @@ public class LessonScoreDaoImpl implements LessonScoreDao {
     }
 
     @Override
+    public Lesson getLessonById(Integer lessonId) {
+        String sql = "select *, lessons.id as l_id from lessons inner join users on users.id = lessons.teacher_id where lessons.id = ?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, lessonId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet != null && resultSet.next()) {
+                Lesson lesson = new Lesson(
+                        resultSet.getInt("l_id"),
+                        resultSet.getString("lesson"),
+                        resultSet.getString("group_name"),
+                        resultSet.getString("name")
+                );
+                return lesson;
+            }
+            throw new IllegalArgumentException("Lesson not found");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public List<Score> getScoresByLessonId(Integer lessonId) {
-        String sql = "select *, scores.id " +
-                "from scores inner join lessons on lessons.id = lesson_id inner join users on users.id = student_id" +
+        String sql = "select *, scores.id as s_id, lessons.id as l_id " +
+                "from scores inner join lessons on lessons.id = lesson_id inner join users on users.id = student_id " +
                 "where lesson_id = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, lessonId);
@@ -92,13 +113,13 @@ public class LessonScoreDaoImpl implements LessonScoreDao {
             if (resultSet != null) {
                 while (resultSet.next()) {
                     Lesson lesson = new Lesson(
-                            resultSet.getInt("lessons.id"),
+                            resultSet.getInt("l_id"),
                             resultSet.getString("lesson"),
                             resultSet.getString("group_name"),
                             resultSet.getString("name")
                     );
                     scores.add(new Score(
-                            resultSet.getLong("scores.id"),
+                            resultSet.getLong("s_id"),
                             resultSet.getString("name"),
                             lesson,
                             resultSet.getInt("score")
@@ -113,11 +134,6 @@ public class LessonScoreDaoImpl implements LessonScoreDao {
 
     @Override
     public List<Score> getAllScores() {
-        return List.of();
-    }
-
-    @Override
-    public List<Score> getGroupScores() {
         return List.of();
     }
 
@@ -142,12 +158,30 @@ public class LessonScoreDaoImpl implements LessonScoreDao {
 
     @Override
     public void saveScore(Score score) {
-
+        String sql = "insert into scores (student_id, lesson_id, score) " +
+                "values ((select id from users where name = ? limit 1), " +
+                "(select id from lessons where group_name = ? and lesson = ? limit 1), ?)";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, score.getStudentName());
+            preparedStatement.setString(2, score.getLesson().getGroup());
+            preparedStatement.setString(3, score.getLesson().getLessonName());
+            preparedStatement.setInt(4, score.getScore());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public void updateScore(Integer studentId, Integer lessonId, Integer newScore) {
-
+    public void updateScore(Score score) {
+        String sql = "update scores set score = ? where id = ?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, score.getScore());
+            preparedStatement.setLong(2, score.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

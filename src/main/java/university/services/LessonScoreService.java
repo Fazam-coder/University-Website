@@ -10,9 +10,13 @@ public interface LessonScoreService {
 
     List<Lesson> getLessonsByTeacherLogin(String teacherLogin);
 
+    Lesson getLessonById(Integer lessonId);
+
     List<Score> getScoresByLessonId(Integer lessonId);
 
     void saveLesson(String group, String lessonName, String teacherName);
+
+    void saveScores(List<Score> newScores);
 
     void updateLessons(List<Lesson> newLessons);
 

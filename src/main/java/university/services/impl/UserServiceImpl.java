@@ -54,6 +54,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<StudentDto> getStudentsByGroup(String group) {
+        return userDao.getStudentsByGroup(group).stream()
+                .map(s -> new StudentDto(
+                        s.getId(), s.getName(), s.getLogin(), s.getImagePath(), s.getAboutInfo(), s.getRole())
+                )
+                .sorted(Comparator.comparing(StudentDto::getName))
+                .toList();
+    }
+
+    @Override
     public void save(String name, String login, String password) {
         password = PasswordUtil.encrypt(password);
         // default value

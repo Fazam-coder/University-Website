@@ -12,11 +12,11 @@ public interface LessonScoreDao {
 
     List<Lesson> getLessonsByTeacherLogin(String login);
 
+    Lesson getLessonById(Integer lessonId);
+
     List<Score> getScoresByLessonId(Integer lessonId);
 
     List<Score> getAllScores();
-
-    List<Score> getGroupScores();
 
     Score getScore(Integer studentId, String lessonName);
 
@@ -24,7 +24,7 @@ public interface LessonScoreDao {
 
     void saveScore(Score score);
 
-    void updateScore(Integer studentId, Integer lessonId, Integer newScore);
+    void updateScore(Score score);
 
     void updateLesson(Lesson lesson);
 

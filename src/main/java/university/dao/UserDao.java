@@ -23,6 +23,8 @@ public interface UserDao {
 
     String getGroup(Integer id);
 
+    List<Student> getStudentsByGroup(String group);
+
     void update(Integer id, String name, String imagePath, String aboutInfo);
 
     void updateGroup(Integer id, String group);

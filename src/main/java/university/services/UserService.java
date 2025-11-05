@@ -16,6 +16,8 @@ public interface UserService {
 
     String getGroup(Integer id);
 
+    List<StudentDto> getStudentsByGroup(String group);
+
     void save(String name, String login, String password);
 
     void saveGroups(Map<Integer, String> groups);

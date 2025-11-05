@@ -179,6 +179,32 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
+    @Override
+    public List<Student> getStudentsByGroup(String group) {
+        String sql = "select * from students inner join users on users.id = students.user_id where group_name = ?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, group);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Student> students = new ArrayList<>();
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    students.add(new Student(
+                            resultSet.getInt("user_id"),
+                            resultSet.getString("name"),
+                            resultSet.getString("login"),
+                            resultSet.getString("password"),
+                            resultSet.getString("image_path"),
+                            resultSet.getString("about_info"),
+                            Role.STUDENT
+                    ));
+                }
+            }
+            return students;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private User getUser(PreparedStatement preparedStatement) throws SQLException, IllegalArgumentException {
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {

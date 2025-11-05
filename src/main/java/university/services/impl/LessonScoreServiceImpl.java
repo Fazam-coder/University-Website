@@ -26,6 +26,11 @@ public class LessonScoreServiceImpl implements LessonScoreService {
     }
 
     @Override
+    public Lesson getLessonById(Integer lessonId) {
+        return lessonScoreDao.getLessonById(lessonId);
+    }
+
+    @Override
     public List<Score> getScoresByLessonId(Integer lessonId) {
         return lessonScoreDao.getScoresByLessonId(lessonId);
     }
@@ -36,6 +41,34 @@ public class LessonScoreServiceImpl implements LessonScoreService {
         Integer lesson_id = 1;
         Lesson lesson = new Lesson(lesson_id, lessonName, group, teacherName);
         lessonScoreDao.saveLesson(lesson);
+    }
+
+    @Override
+    public void saveScores(List<Score> newScores) {
+        System.out.println("💾 Сохранение оценок: " + newScores.size());
+        List<Score> oldScores = lessonScoreDao.getScoresByLessonId(newScores.getFirst().getLesson().getId());
+
+        for (Score newScore : newScores) {
+            if (newScore.getId() != 0L) {
+                boolean found = false;
+                for (Score oldScore : oldScores) {
+                    if (oldScore.getId().equals(newScore.getId())) {
+                        found = true;
+                        if (!Objects.equals(newScore.getScore(), oldScore.getScore())) {
+                            System.out.println("🔄 Обновление: " + newScore);
+                            lessonScoreDao.updateScore(newScore);
+                        }
+                        break;
+                    }
+                }
+                if (!found) {
+                    System.out.println("⚠️ Оценка не найдена для обновления: " + newScore.getId());
+                }
+            } else {
+                System.out.println("➕ Новая оценка: " + newScore);
+                lessonScoreDao.saveScore(newScore);
+            }
+        }
     }
 
     @Override

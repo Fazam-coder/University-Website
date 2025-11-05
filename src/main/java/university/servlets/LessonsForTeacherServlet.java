@@ -32,6 +32,6 @@ public class LessonsForTeacherServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Integer lessonId = Integer.parseInt(req.getParameter("submit").substring("edit_scores_".length()));
-        resp.sendRedirect(req.getContextPath() + "/teacher/score?id=" + lessonId);
+        resp.sendRedirect(req.getContextPath() + "/teacher/scores?id=" + lessonId);
     }
 }
