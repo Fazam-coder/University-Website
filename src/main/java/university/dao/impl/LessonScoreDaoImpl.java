@@ -86,36 +86,18 @@ public class LessonScoreDaoImpl implements LessonScoreDao {
     }
 
     @Override
-    public Lesson getLesson(String group, String lessonName) {
-        String sql = "select lessons.id, name from lessons inner join users on users.id = teacher_id " +
-                "where lessons.name = ? and group_name = ?";
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, lessonName);
-            preparedStatement.setString(2, group);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet != null && resultSet.next()) {
-                return new Lesson(resultSet.getInt("lessons.id"), lessonName, group, resultSet.getString("name"));
-            }
-            throw new IllegalArgumentException("Lesson not found");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
     public Lesson getLessonById(Integer lessonId) {
         String sql = "select *, lessons.id as l_id from lessons inner join users on users.id = lessons.teacher_id where lessons.id = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, lessonId);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet != null && resultSet.next()) {
-                Lesson lesson = new Lesson(
+                return new Lesson(
                         resultSet.getInt("l_id"),
                         resultSet.getString("lesson"),
                         resultSet.getString("group_name"),
                         resultSet.getString("name")
                 );
-                return lesson;
             }
             throw new IllegalArgumentException("Lesson not found");
         } catch (SQLException e) {
@@ -137,16 +119,6 @@ public class LessonScoreDaoImpl implements LessonScoreDao {
                 "from scores inner join lessons on lessons.id = lesson_id inner join users on users.id = student_id " +
                 "where student_id = ?";
         return getScores(studentId, sql);
-    }
-
-    @Override
-    public List<Score> getAllScores() {
-        return List.of();
-    }
-
-    @Override
-    public Score getScore(Integer studentId, String lessonName) {
-        return null;
     }
 
     @Override

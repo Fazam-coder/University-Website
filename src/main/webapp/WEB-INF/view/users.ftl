@@ -9,6 +9,8 @@
         <a href="${contextPath}/admin/lessons">Управление предметами</a>
     </#if>
     <#if role == "STUDENT">
+        <a href="${contextPath}/student/group">Мои одногруппники</a>
+        <br>
         <a href="${contextPath}/student/lessons_and_scores">Мои предметы и баллы</a>
     </#if>
     <#if role == "TEACHER">
@@ -49,7 +51,7 @@
                                 <td>${student.name!""}</td>
                                 <td>${student.group!""}</td>
                                 <td>${student.login!""}</td>
-                                <td><a href="profile?id=${student.id}">Ссылка</a></td>
+                                <td><a href="${contextPath}profile?id=${student.id}">Ссылка</a></td>
                             </tr>
                         </#list>
                         </tbody>

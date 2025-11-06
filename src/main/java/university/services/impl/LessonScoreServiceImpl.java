@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class LessonScoreServiceImpl implements LessonScoreService {
-    private LessonScoreDao lessonScoreDao;
+    private final LessonScoreDao lessonScoreDao;
 
     public LessonScoreServiceImpl(LessonScoreDao lessonScoreDao) {
         this.lessonScoreDao = lessonScoreDao;
@@ -86,27 +86,18 @@ public class LessonScoreServiceImpl implements LessonScoreService {
 
     @Override
     public void saveScores(List<Score> newScores) {
-        System.out.println("💾 Сохранение оценок: " + newScores.size());
         List<Score> oldScores = lessonScoreDao.getScoresByLessonId(newScores.getFirst().getLesson().getId());
-
         for (Score newScore : newScores) {
             if (newScore.getId() != 0L) {
-                boolean found = false;
                 for (Score oldScore : oldScores) {
                     if (oldScore.getId().equals(newScore.getId())) {
-                        found = true;
                         if (!Objects.equals(newScore.getScore(), oldScore.getScore())) {
-                            System.out.println("🔄 Обновление: " + newScore);
                             lessonScoreDao.updateScore(newScore);
                         }
                         break;
                     }
                 }
-                if (!found) {
-                    System.out.println("⚠️ Оценка не найдена для обновления: " + newScore.getId());
-                }
             } else {
-                System.out.println("➕ Новая оценка: " + newScore);
                 lessonScoreDao.saveScore(newScore);
             }
         }

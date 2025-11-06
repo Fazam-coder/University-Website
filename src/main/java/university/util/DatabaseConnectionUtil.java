@@ -1,4 +1,4 @@
-package fazulzyanov.util;
+package university.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,7 +14,7 @@ public final class DatabaseConnectionUtil {
                 connection = DriverManager.getConnection(
                         "jdbc:postgresql://localhost:5432/university",
                         "postgres",
-                        "postgres"
+                        System.getenv("DB_PASSWORD")
                 );
             } catch (ClassNotFoundException | SQLException e) {
                 throw new RuntimeException(e);

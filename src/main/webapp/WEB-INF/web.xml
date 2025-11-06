@@ -42,4 +42,29 @@
         <servlet-name>freemarker</servlet-name>
         <url-pattern>*.ftl</url-pattern>
     </servlet-mapping>
+
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/handle</location>
+    </error-page>
+    <error-page>
+        <error-code>400</error-code>
+        <location>/handle</location>
+    </error-page>
+    <error-page>
+        <error-code>401</error-code>
+        <location>/handle</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/handle</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/handle</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/handle</location>
+    </error-page>
 </web-app>

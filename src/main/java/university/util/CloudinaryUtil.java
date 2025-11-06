@@ -11,9 +11,9 @@ public final class CloudinaryUtil {
     public static Cloudinary getInstance() {
         if (cloudinary == null) {
             Map<String, String> config = new HashMap<>();
-            config.put("cloud_name", "***");
-            config.put("api_key", "***");
-            config.put("api_secret", "***");
+            config.put("cloud_name", System.getenv("CLOUD_NAME"));
+            config.put("api_key", System.getenv("API_KEY"));
+            config.put("api_secret", System.getenv("API_SECRET"));
             cloudinary = new Cloudinary(config);
         }
         return cloudinary;

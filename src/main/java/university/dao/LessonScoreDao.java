@@ -12,17 +12,11 @@ public interface LessonScoreDao {
 
     List<Lesson> getLessonsByGroup(String group);
 
-    Lesson getLesson(String group, String lessonName);
-
     Lesson getLessonById(Integer lessonId);
 
     List<Score> getScoresByLessonId(Integer lessonId);
 
     List<Score> getScoresByStudentId(Integer studentId);
-
-    List<Score> getAllScores();
-
-    Score getScore(Integer studentId, String lessonName);
 
     void saveLesson(Lesson lesson);
 

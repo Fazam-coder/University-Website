@@ -10,17 +10,24 @@
             background-color: #f8f9fa;
             border-bottom: 1px solid #dee2e6;
         }
+        #header h3 {
+            margin-bottom: 0;
+            color: #0d6efd;
+            text-decoration: none;
+        }
+        #header h3:hover {
+            color: #0a58ca;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
 <div id="header" class="d-flex align-items-center">
     <div class="me-auto">
-        <h3 class="mb-0">КФУ ИТИС</h3>
-    </div>
-
-    <div>
-        <a href="${contextPath}/users" class="btn btn-outline-primary">На главную</a>
+        <a href="${contextPath}/users" class="h3 text-decoration-none">
+            <h3 class="mb-0">КФУ ИТИС</h3>
+        </a>
     </div>
 
     <div class="ms-auto d-flex gap-2">
