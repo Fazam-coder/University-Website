@@ -164,10 +164,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public String getGroup(Integer id) {
+    public String getGroup(Integer userId) {
         String sql = "select group_name from students where user_id = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet != null && resultSet.next()) {
                 return resultSet.getString("group_name");

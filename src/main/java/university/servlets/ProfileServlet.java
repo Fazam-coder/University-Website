@@ -27,7 +27,7 @@ public class ProfileServlet extends HttpServlet {
         try {
             UserDto user;
             if (idParam == null || idParam.isEmpty()) {
-                user = userService.getByLogin(req.getSession().getAttribute("user").toString());
+                user = (UserDto) req.getSession().getAttribute("user");
             } else {
                 user = userService.getById(Integer.parseInt(idParam));
             }
@@ -37,7 +37,7 @@ public class ProfileServlet extends HttpServlet {
             req.setAttribute("user", user);
             req.setAttribute("contextPath", req.getContextPath());
             req.setAttribute("is_can_edit", String.valueOf(
-                    (user.getLogin().equals(req.getSession().getAttribute("user").toString())
+                    (user.getLogin().equals(((UserDto) req.getSession().getAttribute("user")).getLogin())
                     || req.getSession().getAttribute("role") == Role.ADMIN)
             ));
             req.getRequestDispatcher("/WEB-INF/view/profile.ftl").forward(req, resp);

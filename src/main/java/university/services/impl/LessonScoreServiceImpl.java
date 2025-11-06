@@ -1,10 +1,13 @@
 package university.services.impl;
 
 import university.dao.LessonScoreDao;
+import university.dto.ScoreWithRankDto;
 import university.entity.Lesson;
 import university.entity.Score;
 import university.services.LessonScoreService;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,6 +29,11 @@ public class LessonScoreServiceImpl implements LessonScoreService {
     }
 
     @Override
+    public List<Lesson> getLessonsByGroup(String group) {
+        return lessonScoreDao.getLessonsByGroup(group);
+    }
+
+    @Override
     public Lesson getLessonById(Integer lessonId) {
         return lessonScoreDao.getLessonById(lessonId);
     }
@@ -33,6 +41,39 @@ public class LessonScoreServiceImpl implements LessonScoreService {
     @Override
     public List<Score> getScoresByLessonId(Integer lessonId) {
         return lessonScoreDao.getScoresByLessonId(lessonId);
+    }
+
+    @Override
+    public List<Score> getScoresByStudentId(Integer studentId) {
+        return lessonScoreDao.getScoresByStudentId(studentId);
+    }
+
+    @Override
+    public List<ScoreWithRankDto> getScoresByLessonIdWithRank(Integer lessonId) {
+        Comparator<Score> comparator = Comparator
+                .comparing(Score::getScore)
+                .reversed()
+                .thenComparing(Score::getStudentName);
+        List<Score> scores = getScoresByLessonId(lessonId)
+                .stream()
+                .sorted(comparator)
+                .toList();
+        List<ScoreWithRankDto> scoresWithRank = new ArrayList<>();
+        int rank = 1;
+        for (Score score : scores) {
+            scoresWithRank.add(new ScoreWithRankDto(score.getStudentName(), score.getScore(), rank++));
+        }
+        for (int i = 1; i < scoresWithRank.size(); i++) {
+            if (scoresWithRank.get(i - 1).getScore().equals(scoresWithRank.get(i).getScore())) {
+                ScoreWithRankDto scoreWithRankDto = scoresWithRank.get(i);
+                scoresWithRank.set(i, new ScoreWithRankDto(
+                        scoreWithRankDto.getStudentName(),
+                        scoreWithRankDto.getScore(),
+                        scoresWithRank.get(i - 1).getRank()
+                ));
+            }
+        }
+        return scoresWithRank;
     }
 
     @Override

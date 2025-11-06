@@ -60,27 +60,27 @@
         const contextPath = "${contextPath}";
     </script>
     <script>
-        // $(document).ready(function() {
-        //     $('.grade-input').on('input', function() {
-        //         const value = $(this).val();
-        //         const errorEl = $(this).next('.grade-error');
-        //         errorEl.text('');
-        //
-        //         if (value !== '' && (isNaN(value) || value < 0 || value > 50)) {
-        //             errorEl.text('Балл должен быть от 0 до 50');
-        //             $('#submitBtn').prop('disabled', true);
-        //         } else {
-        //             let hasInvalid = false;
-        //             $('.grade-input').each(function() {
-        //                 const val = $(this).val();
-        //                 if (val !== '' && (isNaN(val) || val < 0 || val > 50)) {
-        //                     hasInvalid = true;
-        //                     return false;
-        //                 }
-        //             });
-        //             $('#submitBtn').prop('disabled', hasInvalid);
-        //         }
-        //     });
-        // });
+        $(document).ready(function() {
+            $('.grade-input').on('input', function() {
+                const value = $(this).val();
+                const errorEl = $(this).next('.grade-error');
+                errorEl.text('');
+
+                if (value !== '' && (isNaN(value) || value < 0 || value > 50)) {
+                    errorEl.text('Балл должен быть от 0 до 50');
+                    $('#submitBtn').prop('disabled', true);
+                } else {
+                    let hasInvalid = false;
+                    $('.grade-input').each(function() {
+                        const val = $(this).val();
+                        if (val !== '' && (isNaN(val) || val < 0 || val > 50)) {
+                            hasInvalid = true;
+                            return false;
+                        }
+                    });
+                    $('#submitBtn').prop('disabled', hasInvalid);
+                }
+            });
+        });
     </script>
 </#macro>

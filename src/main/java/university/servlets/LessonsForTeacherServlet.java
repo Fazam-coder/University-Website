@@ -1,5 +1,6 @@
 package university.servlets;
 
+import university.dto.UserDto;
 import university.entity.Lesson;
 import university.services.LessonScoreService;
 
@@ -22,7 +23,7 @@ public class LessonsForTeacherServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String login = req.getSession().getAttribute("user").toString();
+        String login = ((UserDto) req.getSession().getAttribute("user")).getLogin();
         List<Lesson> lessons = lessonScoreService.getLessonsByTeacherLogin(login);
         req.setAttribute("lessons", lessons);
         req.setAttribute("contextPath", req.getContextPath());

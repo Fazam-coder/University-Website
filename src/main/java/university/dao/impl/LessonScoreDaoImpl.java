@@ -1,7 +1,6 @@
 package university.dao.impl;
 
 import university.dao.LessonScoreDao;
-import university.dto.StudentDto;
 import university.entity.Lesson;
 import university.entity.Score;
 import university.util.DatabaseConnectionUtil;
@@ -39,23 +38,6 @@ public class LessonScoreDaoImpl implements LessonScoreDao {
     }
 
     @Override
-    public Lesson getLesson(String group, String lessonName) {
-        String sql = "select lessons.id, name from lessons inner join users on users.id = teacher_id " +
-                "where lessons.name = ? and group_name = ?";
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, lessonName);
-            preparedStatement.setString(2, group);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet != null && resultSet.next()) {
-                return new Lesson(resultSet.getInt("lessons.id"), lessonName, group, resultSet.getString("name"));
-            }
-            throw new IllegalArgumentException("Lesson not found");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
     public List<Lesson> getLessonsByTeacherLogin(String login) {
         String sql = "select *, lessons.id as l_id from lessons inner join users on users.id = lessons.teacher_id where login = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -75,6 +57,46 @@ public class LessonScoreDaoImpl implements LessonScoreDao {
                 }
             }
             return lessons;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Lesson> getLessonsByGroup(String group) {
+        String sql = "select *, lessons.id as l_id from lessons join users on lessons.teacher_id = users.id where group_name = ?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            List<Lesson> lessons = new ArrayList<>();
+            preparedStatement.setString(1, group);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    lessons.add(new Lesson(
+                            resultSet.getInt("l_id"),
+                            resultSet.getString("lesson"),
+                            group,
+                            resultSet.getString("name")
+                    ));
+                }
+            }
+            return lessons;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Lesson getLesson(String group, String lessonName) {
+        String sql = "select lessons.id, name from lessons inner join users on users.id = teacher_id " +
+                "where lessons.name = ? and group_name = ?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, lessonName);
+            preparedStatement.setString(2, group);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet != null && resultSet.next()) {
+                return new Lesson(resultSet.getInt("lessons.id"), lessonName, group, resultSet.getString("name"));
+            }
+            throw new IllegalArgumentException("Lesson not found");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -106,30 +128,15 @@ public class LessonScoreDaoImpl implements LessonScoreDao {
         String sql = "select *, scores.id as s_id, lessons.id as l_id " +
                 "from scores inner join lessons on lessons.id = lesson_id inner join users on users.id = student_id " +
                 "where lesson_id = ?";
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, lessonId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            List<Score> scores = new ArrayList<>();
-            if (resultSet != null) {
-                while (resultSet.next()) {
-                    Lesson lesson = new Lesson(
-                            resultSet.getInt("l_id"),
-                            resultSet.getString("lesson"),
-                            resultSet.getString("group_name"),
-                            resultSet.getString("name")
-                    );
-                    scores.add(new Score(
-                            resultSet.getLong("s_id"),
-                            resultSet.getString("name"),
-                            lesson,
-                            resultSet.getInt("score")
-                    ));
-                }
-            }
-            return scores;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return getScores(lessonId, sql);
+    }
+
+    @Override
+    public List<Score> getScoresByStudentId(Integer studentId) {
+        String sql = "select *, scores.id as s_id, lessons.id as l_id " +
+                "from scores inner join lessons on lessons.id = lesson_id inner join users on users.id = student_id " +
+                "where student_id = ?";
+        return getScores(studentId, sql);
     }
 
     @Override
@@ -206,6 +213,28 @@ public class LessonScoreDaoImpl implements LessonScoreDao {
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, lessonId);
             preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private List<Score> getScores(Integer id, String sql) {
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Score> scores = new ArrayList<>();
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    Lesson lesson = getLessonById(resultSet.getInt("l_id"));
+                    scores.add(new Score(
+                            resultSet.getLong("s_id"),
+                            resultSet.getString("name"),
+                            lesson,
+                            resultSet.getInt("score")
+                    ));
+                }
+            }
+            return scores;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -21,7 +21,7 @@ public interface UserDao {
 
     User getByLogin(String login);
 
-    String getGroup(Integer id);
+    String getGroup(Integer userId);
 
     List<Student> getStudentsByGroup(String group);
 

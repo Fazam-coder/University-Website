@@ -26,7 +26,7 @@ public class CheckLessonValidServlet extends HttpServlet {
         if (group != null && !group.isEmpty() && !userService.existsGroup(group)) {
             resp.getWriter().write("Такой группы нет");
         } else if (teacher != null && !teacher.isEmpty() && !userService.existsTeacher(teacher)) {
-            resp.getWriter().write("Такого учителя нет");
+            resp.getWriter().write("Такого преподавателя нет");
         } else {
             resp.getWriter().write("Все хорошо");
         }

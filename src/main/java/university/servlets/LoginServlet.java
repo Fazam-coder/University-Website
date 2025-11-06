@@ -1,5 +1,6 @@
 package university.servlets;
 
+import university.dto.UserDto;
 import university.services.UserService;
 
 import javax.servlet.ServletException;
@@ -36,7 +37,8 @@ public class LoginServlet extends HttpServlet {
         if (userService.verifyUser(login, password)) {
             // session
             HttpSession httpSession = req.getSession();
-            httpSession.setAttribute("user", login);
+            UserDto user = userService.getByLogin(login);
+            httpSession.setAttribute("user", user);
             httpSession.setAttribute("role", userService.getRole(login));
             httpSession.setMaxInactiveInterval(60 * 60);
 

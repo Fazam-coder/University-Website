@@ -37,7 +37,8 @@ public class EditProfileServlet extends HttpServlet {
         try {
             Integer userId = Integer.parseInt(idParam);
             UserDto user = userService.getById(userId);
-            if (!user.getLogin().equals(req.getSession().getAttribute("user").toString())
+            String sessionLogin = ((UserDto) req.getSession().getAttribute("user")).getLogin();
+            if (!user.getLogin().equals(sessionLogin)
                     && !(req.getSession().getAttribute("role") == Role.ADMIN)) {
                 resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Недостаточно прав");
             }

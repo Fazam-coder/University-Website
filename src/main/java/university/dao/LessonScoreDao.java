@@ -8,13 +8,17 @@ import java.util.List;
 public interface LessonScoreDao {
     List<Lesson> getAllLessons();
 
-    Lesson getLesson(String group, String lessonName);
-
     List<Lesson> getLessonsByTeacherLogin(String login);
+
+    List<Lesson> getLessonsByGroup(String group);
+
+    Lesson getLesson(String group, String lessonName);
 
     Lesson getLessonById(Integer lessonId);
 
     List<Score> getScoresByLessonId(Integer lessonId);
+
+    List<Score> getScoresByStudentId(Integer studentId);
 
     List<Score> getAllScores();
 
