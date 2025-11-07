@@ -51,7 +51,7 @@
                                 <td>${student.name!""}</td>
                                 <td>${student.group!""}</td>
                                 <td>${student.login!""}</td>
-                                <td><a href="${contextPath}profile?id=${student.id}">Ссылка</a></td>
+                                <td><a href="${contextPath}/profile?id=${student.id}">Ссылка</a></td>
                             </tr>
                         </#list>
                         </tbody>
@@ -76,7 +76,7 @@
                             <tr>
                                 <td>${teacher.name!""}</td>
                                 <td>${teacher.login!""}</td>
-                                <td><a href="profile?id=${teacher.id}">Ссылка</a></td>
+                                <td><a href="${contextPath}/profile?id=${teacher.id}">Ссылка</a></td>
                             </tr>
                         </#list>
                         </tbody>
