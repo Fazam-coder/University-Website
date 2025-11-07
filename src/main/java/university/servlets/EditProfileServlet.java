@@ -60,9 +60,12 @@ public class EditProfileServlet extends HttpServlet {
         String imagePath = "";
         if (part != null && part.getSize() != 0) {
             imagePath = FileService.saveAndGetPathname(part);
+        } else {
+            imagePath = userService.getById(userId).getImagePath();
         }
         String aboutInfo = req.getParameter("aboutInfo");
         userService.update(userId, name, imagePath, aboutInfo);
+        req.getSession().setAttribute("user", userService.getById(userId));
         resp.sendRedirect(req.getContextPath() + "/profile?id=" + userId);
     }
 }

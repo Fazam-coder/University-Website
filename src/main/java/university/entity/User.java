@@ -5,7 +5,7 @@ public class User {
     private String name;
     private String login;
     private String password;
-    private String imagePath;
+    private String imagePath = "https://res.cloudinary.com/dbopl4g3w/image/upload/v1762496776/avatars/yddlwahkbn44j2kwhyhq.jpg";
     private String aboutInfo;
     private Role role;
 
@@ -34,7 +34,6 @@ public class User {
         this.name = name;
         this.login = login;
         this.password = password;
-        this.imagePath = "";
         this.aboutInfo = "";
         role = Role.USER;
     }
@@ -44,7 +43,6 @@ public class User {
         this.name = name;
         this.login = login;
         this.password = password;
-        this.imagePath = "";
         this.aboutInfo = "";
         this.role = role;
     }
