@@ -11,8 +11,12 @@ public final class DatabaseConnectionUtil {
         if (connection == null) {
             try {
                 Class.forName("org.postgresql.Driver");
+                String dbHost = System.getenv("DB_HOST");
+                if (dbHost == null || dbHost.isEmpty()) {
+                    dbHost = "localhost";
+                }
                 connection = DriverManager.getConnection(
-                        "jdbc:postgresql://localhost:5432/university",
+                        "jdbc:postgresql://" + dbHost + ":5432/university",
                         "postgres",
                         System.getenv("DB_PASSWORD")
                 );
